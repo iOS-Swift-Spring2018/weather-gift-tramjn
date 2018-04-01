@@ -16,6 +16,8 @@ class DetailVC: UIViewController {
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var summaryLabel: UILabel!
     @IBOutlet weak var currentImage: UIImageView!
+    @IBOutlet weak var tableView: UITableView!
+    
     
     var currentPage = 0
     var locationsArray = [WeatherLocation]()
@@ -24,7 +26,14 @@ class DetailVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateUserInterface()
+        tableView.delegate = self
+        tableView.dataSource = self
+        if currentPage != 0 {
+            self.locationsArray[currentPage].getWeather {
+                self.updateUserInterface()
+            }
+        }
+        
 
     }
     
@@ -36,8 +45,22 @@ class DetailVC: UIViewController {
     }
     
     func updateUserInterface() {
-        locationLabel.text = locationsArray[currentPage].name
-        dataLabel.text = locationsArray[currentPage].coordinates
+        let location = locationsArray[currentPage]
+        locationLabel.text = location.name
+        let dateString = formatTimeForTimeZone(unixDate: location.currentTime, timeZone: location.timeZone)
+        dataLabel.text = dateString
+        temperatureLabel.text = location.currentTemp
+        summaryLabel.text = location.currentSummary
+        currentImage.image = UIImage(named: location.currentIcon)
+    }
+    
+    func formatTimeForTimeZone(unixDate: TimeInterval, timeZone: String) -> String {
+        let usableDate = Date(timeIntervalSince1970: unixDate)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE, MMM dd, y"
+        dateFormatter.timeZone = TimeZone(identifier: timeZone)
+        let dateString = dateFormatter.string(from: usableDate)
+        return dateString
     }
 
 
@@ -49,8 +72,6 @@ extension DetailVC: CLLocationManagerDelegate {
     func getlocation() {
         locationManager = CLLocationManager()
         locationManager.delegate = self
-        let status = CLLocationManager.authorizationStatus()
-        handleLocationAuthorizationStatus(status: status)
     }
     
     func handleLocationAuthorizationStatus(status: CLAuthorizationStatus) {
@@ -71,14 +92,12 @@ extension DetailVC: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let geoCoder = CLGeocoder()
+        let geoCoder = CLGeocoder()  // construct type of geocoder object
         var place = ""
         currentLocation = locations.last
         let currentLatitude = currentLocation.coordinate.latitude
         let currentLongitude = currentLocation.coordinate.longitude
         let currentCoordinates = "\(currentLatitude),\(currentLongitude)"
-        print(currentCoordinates)
-        dataLabel.text = currentCoordinates
         geoCoder.reverseGeocodeLocation(currentLocation, completionHandler: {placemarks, error in
             if placemarks != nil {
                 let placemark = placemarks?.last
@@ -89,10 +108,24 @@ extension DetailVC: CLLocationManagerDelegate {
             }
             self.locationsArray[0].name = place
             self.locationsArray[0].coordinates = currentCoordinates
-            self.updateUserInterface()
+            // don't call updateUserInterface() until we hit the completed
+            self.locationsArray[0].getWeather {
+                self.updateUserInterface()
+            }
         })
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Failed to get user location.")
+    }
+}
+
+extension DetailVC: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 7
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DayWeatherCell", for: indexPath)
+        return cell
     }
 }

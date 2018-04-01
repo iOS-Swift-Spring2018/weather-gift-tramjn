@@ -51,7 +51,6 @@ class PageVC: UIPageViewController {
         
         let safeHeight = view.frame.height - view.safeAreaInsets.bottom
         pageControl = UIPageControl(frame: CGRect(x: (view.frame.width - pageControlWidth)/2, y: safeHeight - pageControlHeight, width: pageControlWidth, height: pageControlHeight))
-        print(pageControl.frame)
         
         pageControl.pageIndicatorTintColor = UIColor.lightGray
         pageControl.currentPageIndicatorTintColor = UIColor.black
@@ -64,9 +63,6 @@ class PageVC: UIPageViewController {
     
     func configureListButton() {
         let safeHeight = view.frame.height - view.safeAreaInsets.bottom
-        print(safeHeight)
-        print(barButtonWidth)
-        print(barButtonHeight)
         
         listButton = UIButton(frame: CGRect(x: view.frame.width - barButtonWidth, y: safeHeight - barButtonHeight, width: barButtonWidth, height: barButtonHeight))
         
