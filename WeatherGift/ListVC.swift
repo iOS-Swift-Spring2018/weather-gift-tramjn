@@ -53,10 +53,6 @@ class ListVC: UIViewController {
         present(autocompleteController, animated: true, completion: nil)
     }
     
-
-    
-
-
 }
 
 extension ListVC: UITableViewDelegate, UITableViewDataSource {
@@ -87,13 +83,7 @@ extension ListVC: UITableViewDelegate, UITableViewDataSource {
     
     //MARK:- tableView methods to freeze the first cell
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-//        if indexPath.row != 0 {
-//            return true
-//        } else {
-//            return false
-//        }
         return (indexPath.row != 0 ? true: false)
-        
     }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
@@ -101,13 +91,7 @@ extension ListVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
-//        if proposedDestinationIndexPath.row == 0 {
-//            return sourceIndexPath
-//        } else {
-//            return proposedDestinationIndexPath
-//        }
         return (proposedDestinationIndexPath.row == 0 ? sourceIndexPath : proposedDestinationIndexPath)
-        
     }
     
     func updateTable(place: GMSPlace) {
@@ -121,7 +105,6 @@ extension ListVC: UITableViewDelegate, UITableViewDataSource {
         locationsArray.append(newWeatherLocation)
         tableView.insertRows(at: [newIndexPath], with: .automatic)
     }
-
 }
 
 extension ListVC: GMSAutocompleteViewControllerDelegate {

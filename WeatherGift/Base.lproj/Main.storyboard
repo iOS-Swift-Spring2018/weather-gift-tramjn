@@ -205,7 +205,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HourlyCell" id="c9p-Ko-UfY">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="HourlyCell" id="c9p-Ko-UfY" customClass="HourlyWeatherCell" customModule="WeatherGift" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -243,6 +243,13 @@
                                                 </label>
                                             </subviews>
                                         </view>
+                                        <connections>
+                                            <outlet property="hourlyIcon" destination="Bmx-zv-dS0" id="UcO-X0-5iN"/>
+                                            <outlet property="hourlyPrecipProb" destination="zDP-mk-k0d" id="fUW-4u-Y5z"/>
+                                            <outlet property="hourlyTemp" destination="cuz-Gw-d9E" id="BZc-KH-SBY"/>
+                                            <outlet property="hourlyTime" destination="F6c-x2-K3x" id="XkT-EP-K2H"/>
+                                            <outlet property="rainDropImage" destination="KWB-1u-fCd" id="Clb-Iz-z5t"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
@@ -274,7 +281,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="200.80000000000001" y="270.31484257871068"/>
+            <point key="canvasLocation" x="167" y="137"/>
         </scene>
     </scenes>
     <resources>
